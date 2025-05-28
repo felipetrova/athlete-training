@@ -67,8 +67,7 @@
   "workspaces": [
     "packages/*",
     "web",
-    "api",
-    "web-next"
+    "api"
   ],
   "dependencies": {
     "@nestjs/common": "^10.0.2",
