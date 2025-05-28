@@ -6,6 +6,8 @@ import App from './app/app';
 import About from './pages/About/About';
 import Activities from './pages/Activities/Activities';
 import Profile from './pages/Profile/Profile';
+import LoginStrava from './pages/Auth/auth';
+import AuthCallback from './pages/Auth/AuthCallback';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,9 +18,11 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="" element={<App />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/about" element={<About />} />
         <Route path="/activities" element={<Activities />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/auth" element={<LoginStrava />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>

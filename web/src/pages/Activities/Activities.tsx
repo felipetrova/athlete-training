@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { getActivities } from './Activities.service';
+import { getListActivities } from './Activities.service';
 import { ActivitiesProps } from './type';
 import Header from '../../components/Header';
+import Loading from '../../components/Loading';
 
 export default function Activities() {
   const [activities, setActivities] = useState<ActivitiesProps[]>([]);
@@ -12,7 +13,7 @@ export default function Activities() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await getActivities();
+        const res = await getListActivities();
         console.log(res);
         setActivities(res);
       } catch (error) {
@@ -24,9 +25,6 @@ export default function Activities() {
     getData();
   }, []);
 
-  if (loading) {
-    return <div className="loader">Loading...</div>;
-  }
   if (error) {
     return <p>{error}</p>;
   }
@@ -44,54 +42,58 @@ export default function Activities() {
             This is the activities page of the app.
           </p>
 
-          <table className="w-full border-collapse border border-gray-400 bg-white text-sm dark:border-gray-500 dark:bg-gray-800">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
-                  Esporte
-                </th>
-                <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
-                  Data
-                </th>
-                <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
-                  Título
-                </th>
-                <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
-                  Tempo
-                </th>
-                <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
-                  Distância
-                </th>
-                <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
-                  Elevação
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {activities.map((act) => (
-                <tr className="text-center">
-                  <td className="border border-gray-300 text-white">
-                    {act.sport_type}
-                  </td>
-                  <td className="border border-gray-300 text-white">
-                    {act.start_time}
-                  </td>
-                  <td className="border border-gray-300 text-white">
-                    {act.title}
-                  </td>
-                  <td className="border border-gray-300 text-white">
-                    {act.moving_time}
-                  </td>
-                  <td className="border border-gray-300 text-white">
-                    {act.distance}
-                  </td>
-                  <td className="border border-gray-300 text-white">
-                    {act.elevation_gain}
-                  </td>
+          {loading ? (
+            <Loading />
+          ) : (
+            <table className="w-full border-collapse border border-gray-400 bg-white text-sm dark:border-gray-500 dark:bg-gray-800">
+              <thead className="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
+                    Esporte
+                  </th>
+                  <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
+                    Data
+                  </th>
+                  <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
+                    Título
+                  </th>
+                  <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
+                    Tempo
+                  </th>
+                  <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
+                    Distância
+                  </th>
+                  <th className="w-1/2 border border-gray-300 p-4 text-left font-semibold text-gray-900 dark:border-gray-600 dark:text-gray-200">
+                    Elevação
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {activities.map((act) => (
+                  <tr className="text-center">
+                    <td className="border border-gray-300 text-white">
+                      {act.sport_type}
+                    </td>
+                    <td className="border border-gray-300 text-white">
+                      {act.start_time}
+                    </td>
+                    <td className="border border-gray-300 text-white">
+                      {act.title}
+                    </td>
+                    <td className="border border-gray-300 text-white">
+                      {act.moving_time}
+                    </td>
+                    <td className="border border-gray-300 text-white">
+                      {act.distance}
+                    </td>
+                    <td className="border border-gray-300 text-white">
+                      {act.elevation_gain}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

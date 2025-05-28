@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import { ProfileProps } from './type';
 import { getProfile } from './Profile.service';
+import Loading from '../../components/Loading';
 
 export default function Profile() {
   const [profile, setProfile] = useState<ProfileProps>();
@@ -12,7 +13,7 @@ export default function Profile() {
   useEffect(() => {
     const getDate = async () => {
       try {
-        const res = await getProfile(1);
+        const res = await getProfile();
         setProfile(res);
       } catch (error) {
         setError(`Falha ao carregar o perfil. ${error}`);
@@ -24,7 +25,7 @@ export default function Profile() {
   }, []);
 
   if (loading) {
-    return <div className="loader">Loading...</div>;
+    return <Loading />;
   }
   if (error) {
     return <p>{error}</p>;
@@ -40,9 +41,22 @@ export default function Profile() {
             Profile Page
           </h1>
           {profile && (
-            <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-              {profile.firstname} {profile.lastname}
-            </p>
+            <>
+              {profile.profile_medium !== '' && (
+                <img
+                  className="mask-radial-[100%_100%] mask-radial-from-75% mask-radial-at-left"
+                  src={profile.profile_medium}
+                  alt={`${profile.firstname} profile`}
+                  loading="lazy"
+                />
+              )}
+              <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
+                {profile.firstname} {profile.lastname} - {profile.bio}
+              </p>
+              <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
+                {profile.city} - {profile.state} / {profile.country}
+              </p>
+            </>
           )}
         </div>
       </div>
