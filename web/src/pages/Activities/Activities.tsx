@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { getListActivities } from './Activities.service';
-import { ActivitiesProps } from './type';
+import { ListActivitiesProps } from './type';
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
 
 export default function Activities() {
-  const [activities, setActivities] = useState<ActivitiesProps[]>([]);
+  const [activities, setActivities] = useState<ListActivitiesProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -75,10 +75,10 @@ export default function Activities() {
                       {act.sport_type}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.start_time}
+                      {act.start_date_local}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.title}
+                      {act.name}
                     </td>
                     <td className="border border-gray-300 text-white">
                       {act.moving_time}
@@ -87,7 +87,7 @@ export default function Activities() {
                       {act.distance}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.elevation_gain}
+                      {act.total_elevation_gain}
                     </td>
                   </tr>
                 ))}
