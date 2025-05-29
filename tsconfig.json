@@ -11,12 +11,6 @@
     },
     {
       "path": "./api"
-    },
-    {
-      "path": "./web-next-e2e"
-    },
-    {
-      "path": "./web-next"
     }
   ]
 }
