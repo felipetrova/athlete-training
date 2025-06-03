@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
+
 const clientId = '161979';
-const redirectUri = 'http://localhost:4200/auth/callback'; // precisa estar cadastrado no Strava
+const redirectUri = 'http://localhost:4200'; // precisa estar cadastrado no Strava
 const scope = 'read,activity:read';
 
 const handleLogin = () => {
@@ -7,7 +9,15 @@ const handleLogin = () => {
 };
 
 const LoginStrava = () => {
-  return <button onClick={handleLogin}>Conectar com Strava</button>;
+  return (
+    <Link
+      to="#"
+      onClick={handleLogin}
+      className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+    >
+      Get started
+    </Link>
+  );
 };
 
 export default LoginStrava;
