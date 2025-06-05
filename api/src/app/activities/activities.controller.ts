@@ -1,6 +1,6 @@
 import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 
-@Controller('activities')
+@Controller('athlete/activities')
 export class ActivitiesController {
   private activities = [
     {
@@ -32,13 +32,13 @@ export class ActivitiesController {
     },
   ];
 
-  // GET /activities
+  // GET /athlete/activities
   @Get()
   findAll() {
     return this.activities;
   }
 
-  // GET /activities/:id
+  // GET /athlete/activities/:id
   @Get(':id')
   findOne(@Param('id') id: string) {
     const activitie = this.activities.find((u) => u.id === Number(id));

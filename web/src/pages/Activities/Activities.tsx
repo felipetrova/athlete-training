@@ -1,32 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getListActivities } from './Activities.service';
-import { ListActivitiesProps } from './type';
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
+import {
+  fetchActivities,
+  selectActivities,
+  selectActivitiesError,
+  selectActivitiesStatus,
+} from '../../features/activities/activitiesSlice';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 export default function Activities() {
-  const [activities, setActivities] = useState<ListActivitiesProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const dispatch = useAppDispatch();
+  const activities = useAppSelector(selectActivities);
+  const status = useAppSelector(selectActivitiesStatus);
+  const error = useAppSelector(selectActivitiesError);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await getListActivities();
-        console.log(res);
-        setActivities(res);
-      } catch (error) {
-        setError(`Falha ao carregar os dados: ${error}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getData();
-  }, []);
+    if (status === 'idle') {
+      dispatch(fetchActivities());
+    }
+  }, [status, dispatch]);
 
-  if (error) {
-    return <p>{error}</p>;
+  if (status === 'failed') {
+    console.error('Error:', error);
   }
 
   return (
@@ -42,7 +41,7 @@ export default function Activities() {
             This is the activities page of the app.
           </p>
 
-          {loading ? (
+          {status === 'loading' ? (
             <Loading />
           ) : (
             <table className="w-full border-collapse border border-gray-400 bg-white text-sm dark:border-gray-500 dark:bg-gray-800">
@@ -69,25 +68,25 @@ export default function Activities() {
                 </tr>
               </thead>
               <tbody>
-                {activities.map((act) => (
-                  <tr className="text-center">
+                {activities.map((item) => (
+                  <tr className="text-center" key={item.id}>
                     <td className="border border-gray-300 text-white">
-                      {act.sport_type}
+                      {item.sport_type}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.start_date_local}
+                      {item.start_date_local}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.name}
+                      {item.name}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.moving_time}
+                      {item.moving_time}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.distance}
+                      {item.distance}
                     </td>
                     <td className="border border-gray-300 text-white">
-                      {act.total_elevation_gain}
+                      {item.total_elevation_gain}
                     </td>
                   </tr>
                 ))}

@@ -1,31 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '../../components/Header';
-import { ProfileProps } from './type';
-import { getProfile } from './Profile.service';
 import Loading from '../../components/Loading';
+import { AppDispatch, RootState } from '../../store';
+import { fetchProfile } from '../../features/profile/profileSlice';
 
 export default function Profile() {
-  const [profile, setProfile] = useState<ProfileProps>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, status, error } = useSelector(
+    (state: RootState) => state.profile
+  );
 
   useEffect(() => {
-    const getDate = async () => {
-      try {
-        const res = await getProfile();
-        setProfile(res);
-      } catch (error) {
-        setError(`Falha ao carregar o perfil. ${error}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getDate();
-  }, []);
+    if (status === 'idle') {
+      dispatch(fetchProfile());
+    }
+  }, [status, dispatch]);
 
-  if (error) {
-    console.error('Erro ao trocar código por token:', error);
+  if (status === 'failed') {
+    console.error('Erro:', error);
   }
 
   return (
@@ -38,22 +32,22 @@ export default function Profile() {
             Profile Page
           </h1>
 
-          {loading && <Loading />}
+          {status === 'loading' && <Loading />}
 
-          {profile && (
+          {data && (
             <div className="mt-8 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
               <img
                 className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                src={profile.profile}
+                src={data.profile}
                 loading="lazy"
-                alt={`${profile.firstname} profile`}
+                alt={`${data.firstname} profile`}
               />
               <div className="flex flex-col justify-between p-4 leading-normal">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {profile.firstname} {profile.lastname} - {profile.bio}
+                  {data.firstname} {data.lastname} - {data.bio}
                 </h5>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  {profile.city} - {profile.state} / {profile.country}
+                  {data.city} - {data.state} / {data.country}
                 </p>
               </div>
             </div>

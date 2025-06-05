@@ -18,16 +18,16 @@ export default function App() {
     }
   }, [token]);
 
-  if (showToast) {
-    setTimeout(() => {
-      console.log('showToast:', showToast);
-      return <Toast title={messageAuth} />;
-    }, 10000);
-  }
+  const handleCloseToast = () => {
+    setShowToast(false);
+  };
 
   return (
     <div className="bg-white">
       <Header title="" />
+
+      {showToast && <Toast title={messageAuth} closeToast={handleCloseToast} />}
+
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
